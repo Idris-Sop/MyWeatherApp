@@ -20,11 +20,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     [Fabric with:@[[Digits class]]];
-    [Fabric with:@[[Crashlytics class]]];
+//    [Fabric with:@[[Crashlytics class]]];
     
     [self generateData];
-    self.locationManager = [[MyWeatherAppLocationManger alloc]init];
-    [self.locationManager startUpdatingLocation];
+    
     
     self.cityDict = [[NSMutableDictionary alloc]init];
     UIStoryboard *mainstoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -34,14 +33,9 @@
     [[NSUserDefaults standardUserDefaults] setValue:@"°C" forKey:@"UnitSymbol"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    UITabBarController *tabController = [mainstoryboard instantiateViewControllerWithIdentifier:@"tabController"];
+   // UITabBarController *tabController = [mainstoryboard instantiateViewControllerWithIdentifier:@"tabController"];
     
-    NSLog(@"isCitySelected: %d", [[[NSUserDefaults standardUserDefaults] valueForKey:@"isCitySelected"] boolValue]);
-    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"isCitySelected"] boolValue]) {
-        self.window.rootViewController = tabController;
-    } else {
-        self.window.rootViewController = selectCity;
-    }
+    
     return YES;
 }
 

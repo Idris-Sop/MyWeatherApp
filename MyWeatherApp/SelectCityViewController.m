@@ -111,8 +111,7 @@
         if (self.isFromSetting) {
             [self.navigationController popViewControllerAnimated:YES];
         } else {
-            UITabBarController *tabController = [mainstoryboard instantiateViewControllerWithIdentifier:@"tabController"];
-            [self showViewController:tabController sender:nil];
+            [self dismissViewControllerAnimated:YES completion:nil];
         }
     } else {
         [self showAlertWithTitle:@"Invalid City" andMessage:@"Please select a valid city from the drop down"];

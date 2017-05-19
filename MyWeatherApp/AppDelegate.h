@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
-#import "MyWeatherAppLocationManger.h"
+
 #import "SelectCityViewController.h"
 #import <Fabric/Fabric.h>
 #import <DigitsKit/DigitsKit.h>
@@ -18,7 +18,6 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) MyWeatherAppLocationManger *locationManager;
 @property (strong, nonatomic) NSMutableDictionary *cityDict;
 @property (strong, nonatomic) NSMutableArray *cityData;
 

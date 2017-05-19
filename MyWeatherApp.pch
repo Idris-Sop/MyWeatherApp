@@ -17,4 +17,5 @@
 #import "GlobalFunction.h"
 #import "MyWeatherAppAPI.h"
 #import "AppDelegate.h"
+#import "MyWeatherAppLocationManger.h"
 #endif /* PrefixHeader_pch */

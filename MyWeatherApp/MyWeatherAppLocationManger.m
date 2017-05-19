@@ -42,7 +42,7 @@
     //        [self.locationManager startUpdatingLocation];
     //    }
     
-    [self performSelector:@selector(startUpdatingLocation) withObject:nil afterDelay:5.0];
+    //[self performSelector:@selector(startUpdatingLocation) withObject:nil afterDelay:5.0];
     return self;
 }
 
@@ -62,6 +62,10 @@
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     [[self locationManager] stopUpdatingLocation];
+    
+    if ([self.myWeatherAppLocationManagerDelegate respondsToSelector:@selector(doneGettingLocationCoordinates:)]) {
+        [self.myWeatherAppLocationManagerDelegate doneGettingLocationCoordinates:self];
+    }
 }
 
 @end

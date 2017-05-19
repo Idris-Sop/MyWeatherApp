@@ -8,13 +8,16 @@
 
 #import "MyWeatherAppViewController.h"
 
-@interface WeatherViewController : MyWeatherAppViewController
+@interface WeatherViewController : MyWeatherAppViewController <MyWeatherAppLocationMangerDelegate>
+
 @property (strong, nonatomic) IBOutlet UILabel *currentDateLbl;
 @property (strong, nonatomic) IBOutlet UILabel *currentTempLbl;
 @property (strong, nonatomic) IBOutlet UILabel *minTempLbl;
 @property (strong, nonatomic) IBOutlet UILabel *maxTempLbl;
 @property (strong, nonatomic) IBOutlet UILabel *currentLocation;
 @property (strong, nonatomic) IBOutlet UISegmentedControl *selectionSegment;
+@property (strong, nonatomic) MyWeatherAppLocationManger *locationManager;
+@property (assign, nonatomic) BOOL isFromSelectCity;
 
 - (IBAction)segmentChanged:(UISegmentedControl *)sender;
 

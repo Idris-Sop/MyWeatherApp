@@ -29,21 +29,34 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
     
+    self.locationManager = [[MyWeatherAppLocationManger alloc]init];
+    [self.locationManager setMyWeatherAppLocationManagerDelegate:self];
+    [self.locationManager startUpdatingLocation];
+    
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat: @"EEEE, MMM d, yyyy"];
     
     NSString *dateString = [formatter stringFromDate: [NSDate date]];
     [self.currentDateLbl setText:[@"Today, " stringByAppendingString:dateString]];
-    [self.selectionSegment setSelectedSegmentIndex:0];
+    
+    //[self updateCurrentLocationWeather];
+    if (self.isFromSelectCity) {
+        [self.selectionSegment setSelectedSegmentIndex:1];
+        [self updateChosenCityWeather];
+    } else {
+        [self.selectionSegment setSelectedSegmentIndex:0];
+    }
+    self.isFromSelectCity = NO;
+}
+
+- (void)doneGettingLocationCoordinates:(MyWeatherAppLocationManger *)myWeatherAppLocationManger {
     [self updateCurrentLocationWeather];
 }
 
 - (void)updateCurrentLocationWeather {
     MyWeatherAppAPI *api = [MyWeatherAppAPI sharedMyWeatherAppAPI];
     if (self.isInternetReachable) {
-        NSLog(@"Lat: %@", [NSNumber numberWithDouble:[[[NSUserDefaults standardUserDefaults] valueForKey:@"latitude"] doubleValue]]);
-        NSLog(@"Lattt: %f", [[[NSUserDefaults standardUserDefaults] valueForKey:@"latitude"] doubleValue]);
-        NSLog(@"Lattttttt: %@", [[NSUserDefaults standardUserDefaults] valueForKey:@"latitude"]);
+        NSLog(@"Latttt: %@", [NSNumber numberWithDouble:[[[NSUserDefaults standardUserDefaults] valueForKey:@"latitude"] doubleValue]]);
         if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"latitude"] doubleValue] && [[[NSUserDefaults standardUserDefaults] valueForKey:@"longitude"] doubleValue]) {
             [self showLoading];
             NSMutableDictionary *params = [[NSMutableDictionary alloc]init];
@@ -55,6 +68,7 @@
             [api getWeatherInfoFromServer:YES WithParams:params withCompletion:^(BOOL success, NSObject *currentWeatherInfo, NSString *message) {
                 if (success) {
                     dispatch_async(dispatch_get_main_queue(), ^{
+                        [self hideLoading];
                         NSMutableDictionary *mainDict = [[NSMutableDictionary alloc]init];
                         mainDict = [currentWeatherInfo valueForKey:@"main"];
                         
@@ -66,6 +80,7 @@
                         [self.currentTempLbl setText:[[NSString stringWithFormat:@"%d", [[mainDict valueForKey:@"temp"] intValue]] stringByAppendingString:[[NSUserDefaults standardUserDefaults] valueForKey:@"UnitSymbol"]]];
                         [self.minTempLbl setText:[[NSString stringWithFormat:@"%d", [[mainDict valueForKey:@"temp_min"] intValue]] stringByAppendingString:[[NSUserDefaults standardUserDefaults] valueForKey:@"UnitSymbol"]]];
                         [self.maxTempLbl setText:[[NSString stringWithFormat:@"%d", [[mainDict valueForKey:@"temp_max"] intValue]] stringByAppendingString:[[NSUserDefaults standardUserDefaults] valueForKey:@"UnitSymbol"]]];
+                        [self hideLoading];
                         [self hideLoading];
                     });
                 }
@@ -95,6 +110,7 @@
     } else {
          [self showAlertWithTitle:@"Could not connect to the server. \n Please check your internet connection" andMessage:@""];
     }
+    [self hideLoading];
 }
 
 - (void)openSettings {
@@ -129,12 +145,14 @@
                     [self.minTempLbl setText:[[NSString stringWithFormat:@"%d", [[mainDict valueForKey:@"temp_min"] intValue]] stringByAppendingString:[[NSUserDefaults standardUserDefaults] valueForKey:@"UnitSymbol"]]];
                     [self.maxTempLbl setText:[[NSString stringWithFormat:@"%d", [[mainDict valueForKey:@"temp_max"] intValue]] stringByAppendingString:[[NSUserDefaults standardUserDefaults] valueForKey:@"UnitSymbol"]]];
                     [self hideLoading];
+                    [self hideLoading];
                 });
             }
         }];
     } else {
         [self showAlertWithTitle:@"Could not connect to the server. \n Please check your internet connection" andMessage:@""];
     }
+    [self hideLoading];
 }
 
 
@@ -160,6 +178,14 @@
     if (sender.selectedSegmentIndex == 0) {
         [self updateCurrentLocationWeather];
     } else if (sender.selectedSegmentIndex == 1) {
+        NSLog(@"isCitySelected: %d", [[[NSUserDefaults standardUserDefaults] valueForKey:@"isCitySelected"] boolValue]);
+        if(![[[NSUserDefaults standardUserDefaults] valueForKey:@"isCitySelected"] boolValue]) {
+            UIStoryboard *mainstoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            SelectCityViewController *selectCityVC = [mainstoryboard instantiateViewControllerWithIdentifier:@"SelectCity"];
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:selectCityVC];
+            [self presentViewController:navController animated:YES completion:nil];
+            self.isFromSelectCity = YES;
+        }
         [self updateChosenCityWeather];
     }
 }

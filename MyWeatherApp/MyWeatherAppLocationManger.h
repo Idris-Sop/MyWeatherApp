@@ -9,9 +9,19 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 
+@class MyWeatherAppLocationManger;
+
+@protocol MyWeatherAppLocationMangerDelegate <NSObject>
+
+- (void)doneGettingLocationCoordinates:(MyWeatherAppLocationManger *)myWeatherAppLocationManger;
+
+@end
+
 @interface MyWeatherAppLocationManger : CLLocationManager <CLLocationManagerDelegate>
 
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic ,readonly) CLLocationCoordinate2D myLocation;
+@property (nonatomic, weak) id <MyWeatherAppLocationMangerDelegate> myWeatherAppLocationManagerDelegate;
+
 @end
