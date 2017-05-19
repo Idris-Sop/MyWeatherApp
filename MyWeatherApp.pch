@@ -1,0 +1,20 @@
+//
+//  PrefixHeader.pch
+//  MyWeatherApp
+//
+//  Created by Idris SOP on 2017/05/18.
+//  Copyright © 2017 Idris SOP. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#import "APIHelper.h"
+#import "Constants.h"
+#import "GlobalFunction.h"
+#import "MyWeatherAppAPI.h"
+#import "AppDelegate.h"
+#endif /* PrefixHeader_pch */
