@@ -18,4 +18,5 @@
 #import "MyWeatherAppAPI.h"
 #import "AppDelegate.h"
 #import "MyWeatherAppLocationManger.h"
+#import "MBProgressHUD.h"
 #endif /* PrefixHeader_pch */

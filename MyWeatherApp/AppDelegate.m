@@ -20,22 +20,13 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     [Fabric with:@[[Digits class]]];
-//    [Fabric with:@[[Crashlytics class]]];
-    
     [self generateData];
     
-    
     self.cityDict = [[NSMutableDictionary alloc]init];
-    UIStoryboard *mainstoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    SelectCityViewController *selectCity = [mainstoryboard instantiateViewControllerWithIdentifier:@"SelectCity"];
     
     [[NSUserDefaults standardUserDefaults] setValue:@"metric" forKey:@"TemperatureUnit"];
     [[NSUserDefaults standardUserDefaults] setValue:@"°C" forKey:@"UnitSymbol"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
-   // UITabBarController *tabController = [mainstoryboard instantiateViewControllerWithIdentifier:@"tabController"];
-    
-    
     return YES;
 }
 

@@ -31,18 +31,6 @@
     } else {
         [self.locationManager startUpdatingLocation];
     }
-    
-    //    if ([operatingSystemVersionString floatValue] >= 8.0) {
-    //        if( [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined){
-    //            [self.locationManager requestWhenInUseAuthorization];
-    //            [self.locationManager requestAlwaysAuthorization];
-    //            [self.locationManager startUpdatingLocation];
-    //        }
-    //    } else {
-    //        [self.locationManager startUpdatingLocation];
-    //    }
-    
-    //[self performSelector:@selector(startUpdatingLocation) withObject:nil afterDelay:5.0];
     return self;
 }
 

@@ -39,6 +39,7 @@
     NSLog(@"Number of rows: %lu", (unsigned long)[self.contentParts count]);
     return 1;
 }
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return [self.contentParts count];
 }
@@ -51,6 +52,7 @@
     [customCell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     return customCell;
 }
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([[[self.contentParts valueForKey:@"label"] objectAtIndex:indexPath.section] isEqualToString:@"Change Unit"]) {
         [self changeUnit];

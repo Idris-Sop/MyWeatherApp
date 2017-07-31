@@ -9,7 +9,9 @@
 #import "WeatherViewController.h"
 
 @interface WeatherViewController ()
-
+{
+    WeatherViewController* weakself;
+}
 @end
 
 @implementation WeatherViewController
@@ -17,18 +19,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    weakself = self;
     UIImageView *narBarImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
     UIImage *narBarImage = [UIImage imageNamed:@"weatherIcon"];
     [narBarImageView setImage:narBarImage];
     [self.navigationItem setTitleView:narBarImageView];
-    
-    [self performSelector:@selector(updateCurrentLocationWeather) withObject:self afterDelay:500.0f];
-    [self performSelector:@selector(updateChosenCityWeather) withObject:self afterDelay:500.0f];
+ 
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
-    
     self.locationManager = [[MyWeatherAppLocationManger alloc]init];
     [self.locationManager setMyWeatherAppLocationManagerDelegate:self];
     [self.locationManager startUpdatingLocation];
@@ -43,6 +43,7 @@
     if (self.isFromSelectCity) {
         [self.selectionSegment setSelectedSegmentIndex:1];
         [self updateChosenCityWeather];
+        [MBProgressHUD hideHUDForView:weakself.view animated:YES];
     } else {
         [self.selectionSegment setSelectedSegmentIndex:0];
     }
@@ -54,21 +55,22 @@
 }
 
 - (void)updateCurrentLocationWeather {
-    MyWeatherAppAPI *api = [MyWeatherAppAPI sharedMyWeatherAppAPI];
+    NSLog(@"HERE 1");
     if (self.isInternetReachable) {
+        [MBProgressHUD showHUDAddedTo:weakself.view animated:YES];
         NSLog(@"Latttt: %@", [NSNumber numberWithDouble:[[[NSUserDefaults standardUserDefaults] valueForKey:@"latitude"] doubleValue]]);
         if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"latitude"] doubleValue] && [[[NSUserDefaults standardUserDefaults] valueForKey:@"longitude"] doubleValue]) {
-            [self showLoading];
             NSMutableDictionary *params = [[NSMutableDictionary alloc]init];
             [params setValue:[NSNumber numberWithDouble:[[[NSUserDefaults standardUserDefaults] valueForKey:@"latitude"] doubleValue]] forKey:@"lat"];
             [params setValue:[NSNumber numberWithDouble:[[[NSUserDefaults standardUserDefaults] valueForKey:@"longitude"] doubleValue]] forKey:@"lon"];
             [params setValue:API_KEY forKey:@"APPID"];
             [params setValue:[[NSUserDefaults standardUserDefaults] valueForKey:@"TemperatureUnit"] forKey:@"units"];
             
+            MyWeatherAppAPI *api = [MyWeatherAppAPI sharedMyWeatherAppAPI];
             [api getWeatherInfoFromServer:YES WithParams:params withCompletion:^(BOOL success, NSObject *currentWeatherInfo, NSString *message) {
                 if (success) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [self hideLoading];
+                        [MBProgressHUD hideHUDForView:weakself.view animated:YES];
                         NSMutableDictionary *mainDict = [[NSMutableDictionary alloc]init];
                         mainDict = [currentWeatherInfo valueForKey:@"main"];
                         
@@ -80,8 +82,7 @@
                         [self.currentTempLbl setText:[[NSString stringWithFormat:@"%d", [[mainDict valueForKey:@"temp"] intValue]] stringByAppendingString:[[NSUserDefaults standardUserDefaults] valueForKey:@"UnitSymbol"]]];
                         [self.minTempLbl setText:[[NSString stringWithFormat:@"%d", [[mainDict valueForKey:@"temp_min"] intValue]] stringByAppendingString:[[NSUserDefaults standardUserDefaults] valueForKey:@"UnitSymbol"]]];
                         [self.maxTempLbl setText:[[NSString stringWithFormat:@"%d", [[mainDict valueForKey:@"temp_max"] intValue]] stringByAppendingString:[[NSUserDefaults standardUserDefaults] valueForKey:@"UnitSymbol"]]];
-                        [self hideLoading];
-                        [self hideLoading];
+                        [MBProgressHUD hideHUDForView:weakself.view animated:YES];
                     });
                 }
             }];
@@ -94,6 +95,7 @@
                                                                   style:UIAlertActionStyleDefault
                                                                 handler:^(UIAlertAction *action) {
                                                                     NSLog(@"Dismiss button tapped!");
+                                                                    [self hideLoading];
                                                                 }];
             
             UIAlertAction *settingAction = [UIAlertAction actionWithTitle:@"Settings"
@@ -110,11 +112,11 @@
     } else {
          [self showAlertWithTitle:@"Could not connect to the server. \n Please check your internet connection" andMessage:@""];
     }
-    [self hideLoading];
+    [self performSelector:@selector(updateCurrentLocationWeather) withObject:self afterDelay:500.0f];
 }
 
 - (void)openSettings {
-    BOOL canOpenSettings = (&UIApplicationOpenSettingsURLString != NULL);
+    BOOL canOpenSettings = (UIApplicationOpenSettingsURLString != NULL);
     if (canOpenSettings) {
         NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
         [[UIApplication sharedApplication] openURL:url];
@@ -122,17 +124,19 @@
 }
 
 - (void)updateChosenCityWeather {
-    MyWeatherAppAPI *api = [MyWeatherAppAPI sharedMyWeatherAppAPI];
+    NSLog(@"HERE 2");
     if (self.isInternetReachable) {
-        [self showLoading];
+        [MBProgressHUD showHUDAddedTo:weakself.view animated:YES];
         NSMutableDictionary *params = [[NSMutableDictionary alloc]init];
         [params setValue:[NSNumber numberWithInteger:[[[NSUserDefaults standardUserDefaults] valueForKey:@"CityId"] integerValue]] forKey:@"id"];
         [params setValue:API_KEY forKey:@"APPID"];
         [params setValue:[[NSUserDefaults standardUserDefaults] valueForKey:@"TemperatureUnit"] forKey:@"units"];
         
+        MyWeatherAppAPI *api = [MyWeatherAppAPI sharedMyWeatherAppAPI];
         [api getWeatherInfoFromServer:YES WithParams:params withCompletion:^(BOOL success, NSObject *currentWeatherInfo, NSString *message) {
             if (success) {
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    [MBProgressHUD hideHUDForView:weakself.view animated:YES];
                     NSMutableDictionary *mainDict = [[NSMutableDictionary alloc]init];
                     mainDict = [currentWeatherInfo valueForKey:@"main"];
                     
@@ -144,34 +148,15 @@
                     [self.currentTempLbl setText:[[NSString stringWithFormat:@"%d", [[mainDict valueForKey:@"temp"] intValue]] stringByAppendingString:[[NSUserDefaults standardUserDefaults] valueForKey:@"UnitSymbol"]]];
                     [self.minTempLbl setText:[[NSString stringWithFormat:@"%d", [[mainDict valueForKey:@"temp_min"] intValue]] stringByAppendingString:[[NSUserDefaults standardUserDefaults] valueForKey:@"UnitSymbol"]]];
                     [self.maxTempLbl setText:[[NSString stringWithFormat:@"%d", [[mainDict valueForKey:@"temp_max"] intValue]] stringByAppendingString:[[NSUserDefaults standardUserDefaults] valueForKey:@"UnitSymbol"]]];
-                    [self hideLoading];
-                    [self hideLoading];
+                    [MBProgressHUD hideHUDForView:weakself.view animated:YES];
                 });
             }
         }];
     } else {
         [self showAlertWithTitle:@"Could not connect to the server. \n Please check your internet connection" andMessage:@""];
     }
-    [self hideLoading];
+    [self performSelector:@selector(updateChosenCityWeather) withObject:self afterDelay:500.0f];
 }
-
-
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 
 - (IBAction)segmentChanged:(UISegmentedControl *)sender {
     NSLog(@"Sender: %ld", (long)sender.selectedSegmentIndex);
@@ -189,4 +174,22 @@
         [self updateChosenCityWeather];
     }
 }
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+
+
 @end

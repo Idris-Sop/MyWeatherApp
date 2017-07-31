@@ -45,8 +45,6 @@
 
 #pragma mark - Core Data stack
 
-
-
 - (NSPersistentContainer *)persistentContainer {
     // The persistent container for the application. This implementation creates and returns a container, having loaded the store for the application to it.
     @synchronized (self) {
@@ -98,28 +96,15 @@
         NSLog(@"requestURL: %@", requestURL);
         NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:requestURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
             if (!error) {
-                //NSManagedObjectContext *context = [self managedObjectContext];
-                //[self deleteRecordFromEntity:@"Weather"];
                 
                 NSHTTPURLResponse *resp = (NSHTTPURLResponse *)response;
-                //            NSLog(@"Response: %@", response);
-                //            NSLog(@"resp: %@", resp);
                 if (resp.statusCode == 200) {
                     [self deleteRecordFromEntity:@"Weather"];
                     NSObject *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                     NSLog(@"JSON Response: %@", json);
-//                    Weather *newWeather = [NSEntityDescription insertNewObjectForEntityForName:@"Weather" inManagedObjectContext:context];
-//                    [newWeather setJson:json inContext:context];
-//                    [self.managedObjectContext save:&error];
-//
-//                    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Weather"];
-//                    NSError *error;
-//                    NSArray *weatherDetails = [context executeFetchRequest:fetchRequest error:&error];
-//                    Weather *currentWeather = [weatherDetails objectAtIndex:0];
                     completion(YES, json, nil);
                 } else {
                     NSString *responseBody = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                    //                NSLog(@"responseBody: %@", responseBody);
                     completion(NO, nil, responseBody);
                 }
             } else {
@@ -128,14 +113,6 @@
             }
         }];
         [dataTask resume];
-
-    } else {
-//        NSManagedObjectContext *context = [self managedObjectContext];
-//        NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Weather"];
-//        NSError *error;
-//        NSArray *weatherDetails = [context executeFetchRequest:fetchRequest error:&error];
-//        Weather *currentWeather = [weatherDetails objectAtIndex:0];
-//        completion(YES, currentWeather, nil);
     }
 }
 

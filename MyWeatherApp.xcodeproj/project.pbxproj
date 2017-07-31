@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		787B882046FD108ACE050A42 /* libPods-MyWeatherApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6BFBCA8684E510A16BF60C9 /* libPods-MyWeatherApp.a */; };
+		D6720EBC1F2F39D30082FA60 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = D6720EBA1F2F39D30082FA60 /* MBProgressHUD.m */; };
 		D6C6EB221ECE494000E0CA44 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C6EB211ECE494000E0CA44 /* Reachability.m */; };
 		D6C6EB251ECE496000E0CA44 /* GMDCircleLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C6EB241ECE496000E0CA44 /* GMDCircleLoader.m */; };
 		D6C6EB281ECE4E9700E0CA44 /* SelectCityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C6EB271ECE4E9700E0CA44 /* SelectCityViewController.m */; };
@@ -52,6 +53,8 @@
 		5B4604E7C4F7169F76B1130F /* Pods-MyWeatherApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyWeatherApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MyWeatherApp/Pods-MyWeatherApp.debug.xcconfig"; sourceTree = "<group>"; };
 		9A6E0A5691AC13707D821075 /* Pods-MyWeatherApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyWeatherApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-MyWeatherApp/Pods-MyWeatherApp.release.xcconfig"; sourceTree = "<group>"; };
 		D654AAC61ECE285F00A21853 /* MyWeatherApp.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyWeatherApp.pch; sourceTree = SOURCE_ROOT; };
+		D6720EBA1F2F39D30082FA60 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		D6720EBB1F2F39D30082FA60 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		D6BFBCA8684E510A16BF60C9 /* libPods-MyWeatherApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MyWeatherApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6C6EB201ECE494000E0CA44 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		D6C6EB211ECE494000E0CA44 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
@@ -139,6 +142,20 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		D6720EB91F2F39A80082FA60 /* Reusable Components */ = {
+			isa = PBXGroup;
+			children = (
+				D6720EBB1F2F39D30082FA60 /* MBProgressHUD.h */,
+				D6720EBA1F2F39D30082FA60 /* MBProgressHUD.m */,
+				D6C6EB231ECE496000E0CA44 /* GMDCircleLoader.h */,
+				D6C6EB241ECE496000E0CA44 /* GMDCircleLoader.m */,
+				D6C6EB201ECE494000E0CA44 /* Reachability.h */,
+				D6C6EB211ECE494000E0CA44 /* Reachability.m */,
+				D6C6EB2E1ECE537400E0CA44 /* MPGTextField */,
+			);
+			name = "Reusable Components";
+			sourceTree = "<group>";
+		};
 		D6C6EB2E1ECE537400E0CA44 /* MPGTextField */ = {
 			isa = PBXGroup;
 			children = (
@@ -151,11 +168,6 @@
 		D6E1B8C51ECE09C6001CE5BC /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				D6C6EB2E1ECE537400E0CA44 /* MPGTextField */,
-				D6C6EB231ECE496000E0CA44 /* GMDCircleLoader.h */,
-				D6C6EB241ECE496000E0CA44 /* GMDCircleLoader.m */,
-				D6C6EB201ECE494000E0CA44 /* Reachability.h */,
-				D6C6EB211ECE494000E0CA44 /* Reachability.m */,
 				D6E1B8C71ECE09DD001CE5BC /* Networking */,
 				D6E1B8C61ECE09CD001CE5BC /* Databases */,
 			);
@@ -205,6 +217,7 @@
 		D6F5BEFE1ECDF376004B4753 /* MyWeatherApp */ = {
 			isa = PBXGroup;
 			children = (
+				D6720EB91F2F39A80082FA60 /* Reusable Components */,
 				D6C6EB2C1ECE533000E0CA44 /* city.json */,
 				D6F5BF3F1ECE060E004B4753 /* Constants.h */,
 				D6F5BF401ECE06BC004B4753 /* GlobalFunction.h */,
@@ -341,17 +354,20 @@
 					D6F5BEFB1ECDF376004B4753 = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = GLK7J5PP82;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
 					D6F5BF171ECDF376004B4753 = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = GLK7J5PP82;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 						TestTargetID = D6F5BEFB1ECDF376004B4753;
 					};
 					D6F5BF221ECDF376004B4753 = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = GLK7J5PP82;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 						TestTargetID = D6F5BEFB1ECDF376004B4753;
 					};
@@ -479,6 +495,7 @@
 				D6F5BF371ECDF7B3004B4753 /* MyWeatherAppViewController.m in Sources */,
 				D6C6EB251ECE496000E0CA44 /* GMDCircleLoader.m in Sources */,
 				D6C6EB351ECEFBA100E0CA44 /* ChangeUnitViewController.m in Sources */,
+				D6720EBC1F2F39D30082FA60 /* MBProgressHUD.m in Sources */,
 				D6C6EB281ECE4E9700E0CA44 /* SelectCityViewController.m in Sources */,
 				D6C6EB221ECE494000E0CA44 /* Reachability.m in Sources */,
 				D6F5BF041ECDF376004B4753 /* AppDelegate.m in Sources */,
@@ -647,6 +664,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -663,6 +681,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -675,6 +694,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dvt.MyWeatherAppTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyWeatherApp.app/MyWeatherApp";
 			};
 			name = Debug;
@@ -688,6 +708,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dvt.MyWeatherAppTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyWeatherApp.app/MyWeatherApp";
 			};
 			name = Release;
@@ -700,6 +721,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dvt.MyWeatherAppUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = MyWeatherApp;
 			};
 			name = Debug;
@@ -712,6 +734,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dvt.MyWeatherAppUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = MyWeatherApp;
 			};
 			name = Release;

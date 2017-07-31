@@ -30,9 +30,7 @@
 
 - (void)showLoading {
     self.loadingView = [[UIView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - 100.0F) / 2.0F, (self.view.frame.size.height - 100.0F) / 2.0F, 100.0F, 100.0F)];
-    //[self.loadingView setAlpha:0.5];
     [self.loadingView setBackgroundColor:[UIColor whiteColor]];
-    //[self.loadingView setBackgroundColor:[UIColor purpleColor]];
     [self.loadingView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [self.loadingView.layer setCornerRadius:10];
     [self.loadingView.layer setMasksToBounds:YES];
@@ -51,7 +49,6 @@
     [GMDCircleLoader hideFromView:self.loadingView animated:YES];
     [self.loadingView removeFromSuperview];
     [self.view setUserInteractionEnabled:YES];
-    //[self performSelector:@selector(stopCircleLoader) withObject:nil afterDelay:5];
 }
 
 - (void)showAlertWithTitle:(NSString *)title andMessage:(NSString *)message {
@@ -113,7 +110,6 @@
         } else {
             self.isInternetReachable = NO;
         }
-        //[self configureTextField:self.internetConnectionStatusField imageView:self.internetConnectionImageView reachability:reachability];
     }
     NSLog(@"\nIsInternetReachable: %d", self.isInternetReachable);
     
